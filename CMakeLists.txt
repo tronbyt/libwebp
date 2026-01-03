@@ -1,20 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-# Version from configure.ac
-set(VERSION "1.6.0")
-set(PACKAGE_VERSION ${VERSION})
-set(PACKAGE_NAME "libwebp")
-
-# Configuration for ESP32
-set(HAVE_BUILTIN_BSWAP16 1)
-set(HAVE_BUILTIN_BSWAP32 1)
-set(HAVE_BUILTIN_BSWAP64 1)
-set(HAVE_UNISTD_H 1)
-set(WEBP_USE_THREAD 0)
-
-# Generate config.h (placed in ${CMAKE_CURRENT_BINARY_DIR}/src/webp/config.h)
-configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/webp/config.h @ONLY)
-
 set(SOURCES
     "src/dec/alpha_dec.c"
     "src/dec/buffer_dec.c"
@@ -47,8 +32,12 @@ set(SOURCES
     "src/utils/utils.c"
 )
 
-add_library(libwebp STATIC ${SOURCES})
-
-target_include_directories(libwebp PUBLIC "src")
-target_include_directories(libwebp PRIVATE "." "${CMAKE_CURRENT_BINARY_DIR}")
-target_compile_definitions(libwebp PRIVATE HAVE_CONFIG_H)
+idf_component_register(SRCS ${SOURCES}
+                       INCLUDE_DIRS "src"
+                       PRIV_INCLUDE_DIRS "."
+                       COMPILE_DEFINITIONS
+                           "HAVE_BUILTIN_BSWAP16=1"
+                           "HAVE_BUILTIN_BSWAP32=1"
+                           "HAVE_BUILTIN_BSWAP64=1"
+                           "HAVE_UNISTD_H=1"
+                       )
