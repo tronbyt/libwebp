@@ -13,7 +13,7 @@ set(HAVE_UNISTD_H 1)
 set(WEBP_USE_THREAD 0)
 
 # Generate config.h (placed in ${CMAKE_CURRENT_BINARY_DIR}/src/webp/config.h)
-configure_file(cmake/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/webp/config.h @ONLY)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/cmake/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/webp/config.h @ONLY)
 
 set(SOURCES
     "src/dec/alpha_dec.c"
@@ -47,8 +47,8 @@ set(SOURCES
     "src/utils/utils.c"
 )
 
-idf_component_register(SRCS ${SOURCES}
-                       INCLUDE_DIRS "src"
-                       PRIV_INCLUDE_DIRS "." ${CMAKE_CURRENT_BINARY_DIR}
-                       COMPILE_DEFINITIONS "HAVE_CONFIG_H"
-                       )
+add_library(libwebp STATIC ${SOURCES})
+
+target_include_directories(libwebp PUBLIC "src")
+target_include_directories(libwebp PRIVATE "." "${CMAKE_CURRENT_BINARY_DIR}")
+target_compile_definitions(libwebp PRIVATE HAVE_CONFIG_H)
