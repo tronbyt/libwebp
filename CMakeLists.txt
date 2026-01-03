@@ -35,9 +35,11 @@ set(SOURCES
 idf_component_register(SRCS ${SOURCES}
                        INCLUDE_DIRS "src"
                        PRIV_INCLUDE_DIRS "."
-                       COMPILE_DEFINITIONS
-                           "HAVE_BUILTIN_BSWAP16=1"
-                           "HAVE_BUILTIN_BSWAP32=1"
-                           "HAVE_BUILTIN_BSWAP64=1"
-                           "HAVE_UNISTD_H=1"
                        )
+
+target_compile_definitions(${COMPONENT_LIB} PRIVATE
+    HAVE_BUILTIN_BSWAP16=1
+    HAVE_BUILTIN_BSWAP32=1
+    HAVE_BUILTIN_BSWAP64=1
+    HAVE_UNISTD_H=1
+)
