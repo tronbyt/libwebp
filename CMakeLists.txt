@@ -11,6 +11,8 @@ set(SOURCES
     "src/dec/vp8_dec.c"
     "src/dec/vp8l_dec.c"
     "src/dec/webp_dec.c"
+    "src/demux/anim_decode.c"
+    "src/demux/demux.c"
     "src/dsp/alpha_processing.c"
     "src/dsp/cpu.c"
     "src/dsp/dec.c"
@@ -36,10 +38,3 @@ idf_component_register(SRCS ${SOURCES}
                        INCLUDE_DIRS "src"
                        PRIV_INCLUDE_DIRS "."
                        )
-
-target_compile_definitions(${COMPONENT_LIB} PRIVATE
-    HAVE_BUILTIN_BSWAP16=1
-    HAVE_BUILTIN_BSWAP32=1
-    HAVE_BUILTIN_BSWAP64=1
-    HAVE_UNISTD_H=1
-)
